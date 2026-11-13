@@ -23,6 +23,7 @@ Import from `src/components`. Design tokens live in `src/design/tokens.css`.
 ```bash
 npm install
 npm run dev
+npm test
 ```
 
 ## Deploy to Cloudflare Pages

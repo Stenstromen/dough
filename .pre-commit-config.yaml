@@ -1,0 +1,14 @@
+---
+repos:
+  - repo: local
+    hooks:
+      - id: lint
+        name: Linting
+        entry: npm run lint
+        language: node
+        pass_filenames: false
+      - id: test
+        name: Running Vitest Tests
+        entry: npm run test
+        language: node
+        pass_filenames: false
