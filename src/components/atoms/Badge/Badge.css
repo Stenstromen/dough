@@ -1,0 +1,34 @@
+.ui-badge {
+  margin: 0;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  width: fit-content;
+}
+
+.ui-badge--neutral {
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
+  color: var(--ink-muted);
+}
+
+.ui-badge--excellent {
+  background: color-mix(in srgb, var(--good) 22%, transparent);
+  color: color-mix(in srgb, var(--good) 70%, var(--ink));
+}
+
+.ui-badge--good {
+  background: color-mix(in srgb, var(--accent) 28%, transparent);
+  color: color-mix(in srgb, var(--accent) 55%, var(--ink));
+}
+
+.ui-badge--elevated {
+  background: color-mix(in srgb, var(--warn) 24%, transparent);
+  color: color-mix(in srgb, var(--warn) 55%, var(--ink));
+}
+
+.ui-badge--high {
+  background: color-mix(in srgb, var(--bad) 22%, transparent);
+  color: color-mix(in srgb, var(--bad) 55%, var(--ink));
+}

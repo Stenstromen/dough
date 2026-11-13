@@ -1,0 +1,12 @@
+.ui-metric {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.ui-metric__value {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.15rem;
+  line-height: 1;
+}

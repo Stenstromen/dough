@@ -1,0 +1,96 @@
+.financing__layout {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 900px) {
+  .financing__layout {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    align-items: start;
+  }
+}
+
+.financing__inputs {
+  align-content: start;
+}
+
+.financing__computed {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.85rem 0.95rem;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--good) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--good) 28%, transparent);
+}
+
+.financing__computed--accent {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.financing__rates {
+  margin-top: 0.35rem;
+}
+
+.financing__compare {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.financing__compare-head,
+.financing__compare-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr) minmax(0, 0.8fr);
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.financing__compare-head {
+  padding-bottom: 0.55rem;
+  margin-bottom: 0.2rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.financing__compare-head span:not(:first-child),
+.financing__compare-row span:not(:first-child) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.financing__compare-row {
+  padding: 0.55rem 0.35rem;
+  border-radius: 10px;
+  color: var(--ink);
+  font-size: 0.92rem;
+}
+
+.financing__compare-row--emphasize {
+  font-weight: 700;
+}
+
+.financing__compare-row--highlight {
+  background: color-mix(in srgb, var(--good) 14%, transparent);
+}
+
+.financing__schedule-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.financing__schedule-toggle {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.financing__reveal {
+  justify-self: start;
+  margin-top: 0.35rem;
+}

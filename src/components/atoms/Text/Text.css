@@ -1,0 +1,80 @@
+.ui-text {
+  margin: 0;
+}
+
+.ui-text--title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.35rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.ui-text--lede {
+  margin-top: var(--space-2);
+  color: var(--ink-muted);
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+.ui-text--section {
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.ui-text--label {
+  font-size: 0.82rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.ui-text--body {
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.ui-text--muted {
+  color: var(--ink-muted);
+  line-height: 1.5;
+}
+
+.ui-text--meta {
+  font-size: 0.86rem;
+  color: var(--ink-muted);
+  line-height: 1.4;
+}
+
+.ui-text--metric {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 7vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.ui-text--metricUnit {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.ui-text--rowTitle {
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.ui-text--rowValue {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}

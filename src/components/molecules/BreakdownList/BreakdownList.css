@@ -1,0 +1,24 @@
+.ui-breakdown {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+
+.ui-breakdown__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 0.75rem 0;
+  border-top: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+}
+
+.ui-breakdown__row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.ui-breakdown__meta {
+  margin-top: 0.2rem;
+}

@@ -1,0 +1,61 @@
+.ui-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  animation: ui-brand-in 500ms var(--ease-out) both;
+}
+
+.ui-brand--compact {
+  gap: 0.7rem;
+}
+
+.ui-brand__mark {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.75rem;
+  background:
+    radial-gradient(circle at 30% 30%, #e8ff9a, var(--accent) 55%, #6f9a20 100%);
+  box-shadow:
+    inset 0 0 0 1.5px color-mix(in srgb, white 25%, transparent),
+    0 8px 20px color-mix(in srgb, var(--accent) 25%, transparent);
+  animation: ui-brand-pulse 4.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.ui-brand__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.ui-brand__tag {
+  margin: 0.2rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+@keyframes ui-brand-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ui-brand-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}

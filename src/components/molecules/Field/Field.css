@@ -1,0 +1,9 @@
+.ui-field {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.ui-field--grow {
+  flex: 1;
+}

@@ -1,0 +1,40 @@
+.ui-input {
+  width: 100%;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--surface) 88%, white);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  outline: none;
+  transition:
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease,
+    background var(--duration-fast) ease;
+}
+
+.ui-input--md {
+  padding: 0.85rem 0.95rem;
+  font-size: 1.05rem;
+}
+
+.ui-input--lg {
+  padding: 0.95rem 1rem;
+  font-size: 1.15rem;
+}
+
+.ui-input::placeholder {
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+
+.ui-input:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+}
+
+.ui-input:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+}
