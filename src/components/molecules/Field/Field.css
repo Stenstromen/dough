@@ -7,3 +7,46 @@
 .ui-field--grow {
   flex: 1;
 }
+
+.ui-field__control {
+  position: relative;
+  min-width: 0;
+}
+
+.ui-input.ui-input--with-clear {
+  padding-right: 2.55rem;
+}
+
+.ui-field__clear {
+  position: absolute;
+  top: 50%;
+  right: 0.55rem;
+  transform: translateY(-50%);
+  display: inline-grid;
+  place-items: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+  color: var(--ink-muted);
+  font: inherit;
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) ease,
+    color var(--duration-fast) ease;
+}
+
+.ui-field__clear:hover {
+  background: color-mix(in srgb, var(--ink) 20%, transparent);
+  color: var(--ink);
+}
+
+.ui-field__clear:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
