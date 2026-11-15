@@ -1,5 +1,7 @@
 # Dough
 
+![Dough](./public/icons/icon-512-maskable.png)
+
 A responsive finance widget app for Cloudflare Pages. Switch between calculators from the sidebar (desktop) or bottom dock (mobile).
 
 ## Widgets
