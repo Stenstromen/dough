@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useId, useRef, useState } from 'react'
+import { useId, useState } from 'react'
 import {
   formatDateDisplay,
   parseDateDisplay,
@@ -26,7 +26,7 @@ export function DateField({
 }: DateFieldProps) {
   const generatedId = useId()
   const fieldId = id ?? generatedId
-  const pickerRef = useRef<HTMLInputElement>(null)
+  const pickerId = `${fieldId}-picker`
   const [draft, setDraft] = useState<string | null>(null)
   const display = draft ?? formatDateDisplay(value)
 
@@ -36,16 +36,6 @@ export function DateField({
     if (iso) {
       onChange(iso)
     }
-  }
-
-  function openPicker() {
-    const input = pickerRef.current
-    if (!input) return
-    if (typeof input.showPicker === 'function') {
-      void input.showPicker()
-      return
-    }
-    input.click()
   }
 
   return (
@@ -68,12 +58,7 @@ export function DateField({
             }
           }}
         />
-        <button
-          type="button"
-          className="ui-date-field__calendar"
-          aria-label="Open calendar"
-          onClick={openPicker}
-        >
+        <div className="ui-date-field__calendar">
           <svg
             viewBox="0 0 20 20"
             width="18"
@@ -97,19 +82,24 @@ export function DateField({
               strokeLinecap="round"
             />
           </svg>
-        </button>
-        <input
-          ref={pickerRef}
-          type="date"
-          className="ui-date-field__picker"
-          value={value}
-          tabIndex={-1}
-          aria-hidden="true"
-          onChange={(event) => {
-            setDraft(null)
-            onChange(event.target.value)
-          }}
-        />
+          {/*
+            iOS Safari ignores programmatic .click() / showPicker() on hidden
+            date inputs. Overlay a real date input so the tap is native.
+          */}
+          <input
+            id={pickerId}
+            type="date"
+            className="ui-date-field__picker"
+            value={value}
+            aria-label="Open calendar"
+            onChange={(event) => {
+              const next = event.target.value
+              if (!next) return
+              setDraft(null)
+              onChange(next)
+            }}
+          />
+        </div>
       </div>
     </div>
   )
