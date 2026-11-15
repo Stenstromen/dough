@@ -52,7 +52,6 @@ export function AppShell({
           })}
         </nav>
 
-        <p className="ui-shell__footer">Add more widgets anytime</p>
       </aside>
 
       <main className="ui-shell__stage">
