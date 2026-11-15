@@ -1,0 +1,60 @@
+.budget__bar {
+  display: grid;
+  grid-template-columns: 50% 30% 20%;
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+.budget__bar-needs {
+  background: var(--accent);
+}
+
+.budget__bar-wants {
+  background: var(--warn);
+}
+
+.budget__bar-savings {
+  background: var(--good);
+}
+
+.budget__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.budget__item {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.95rem 1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--line) 85%, transparent);
+  background: color-mix(in srgb, var(--surface) 45%, transparent);
+}
+
+.budget__item--needs {
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.budget__item--wants {
+  border-color: color-mix(in srgb, var(--warn) 35%, transparent);
+}
+
+.budget__item--savings {
+  border-color: color-mix(in srgb, var(--good) 35%, transparent);
+}
+
+.budget__item-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.budget__item-desc {
+  margin-top: 0.25rem;
+}

@@ -1,3 +1,4 @@
+import { Budget503020 } from './Budget503020/Budget503020'
 import { FinancingPlanner } from './FinancingPlanner/FinancingPlanner'
 import { LtvCalculator } from './LtvCalculator/LtvCalculator'
 import { MortgagePayment } from './MortgagePayment/MortgagePayment'
@@ -24,6 +25,13 @@ export const widgets: WidgetDefinition[] = [
     shortName: 'Plan',
     description: 'Compare original vs adjusted',
     Component: FinancingPlanner,
+  },
+  {
+    id: 'budget',
+    name: '50 / 30 / 20',
+    shortName: '50/30',
+    description: 'Needs, wants & savings',
+    Component: Budget503020,
   },
 ]
 
