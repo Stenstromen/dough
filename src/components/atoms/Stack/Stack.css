@@ -43,5 +43,6 @@
 @media (min-width: 640px) {
   .ui-stack--cols-form-2 {
     grid-template-columns: 1fr 1fr;
+    align-items: start;
   }
 }

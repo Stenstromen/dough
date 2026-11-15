@@ -1,4 +1,5 @@
 import { Budget503020 } from './Budget503020/Budget503020'
+import { DayBudget } from './DayBudget/DayBudget'
 import { FinancingPlanner } from './FinancingPlanner/FinancingPlanner'
 import { LtvCalculator } from './LtvCalculator/LtvCalculator'
 import { MortgagePayment } from './MortgagePayment/MortgagePayment'
@@ -32,6 +33,13 @@ export const widgets: WidgetDefinition[] = [
     shortName: '50/30',
     description: 'Needs, wants & savings',
     Component: Budget503020,
+  },
+  {
+    id: 'day-budget',
+    name: 'Day budget',
+    shortName: 'Day',
+    description: 'Spendable per day to payday',
+    Component: DayBudget,
   },
 ]
 

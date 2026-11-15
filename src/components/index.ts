@@ -11,6 +11,7 @@ export { Text } from './atoms/Text/Text'
 
 export { Brand } from './molecules/Brand/Brand'
 export { BreakdownList } from './molecules/BreakdownList/BreakdownList'
+export { DateField } from './molecules/DateField/DateField'
 export { Field } from './molecules/Field/Field'
 export { Metric } from './molecules/Metric/Metric'
 export { Stat, StatGroup } from './molecules/Stat/Stat'

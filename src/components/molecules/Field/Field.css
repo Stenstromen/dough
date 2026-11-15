@@ -2,6 +2,7 @@
   display: grid;
   gap: 0.45rem;
   min-width: 0;
+  align-content: start;
 }
 
 .ui-field--grow {
