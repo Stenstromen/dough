@@ -15,9 +15,9 @@ export const widgets: WidgetDefinition[] = [
   },
   {
     id: 'mortgage',
-    name: 'Monthly payment',
-    shortName: 'Pay',
-    description: 'Split loans & 12-month plan',
+    name: 'Mortgage payment plan',
+    shortName: 'Loan',
+    description: 'Split parts & 12-month plan',
     Component: MortgagePayment,
   },
   {

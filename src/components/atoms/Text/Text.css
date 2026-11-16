@@ -16,6 +16,8 @@
   color: var(--ink-muted);
   font-size: 1.02rem;
   line-height: 1.55;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
 }
 
 .ui-text--section {

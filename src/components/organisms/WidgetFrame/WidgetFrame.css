@@ -4,6 +4,7 @@
 
 .ui-widget-frame__intro {
   max-width: 38rem;
+  min-width: 0;
 }
 
 @keyframes ui-widget-in {

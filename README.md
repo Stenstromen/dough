@@ -7,7 +7,7 @@ A responsive finance widget app for Cloudflare Pages. Switch between calculators
 ## Widgets
 
 - **Loan-to-value (LTV)** — enter property value and mortgage balance to see your ratio, equity, and leverage band.
-- **Monthly payment** — split a mortgage into parts with different rates, choose what to amortize, and view a 12-month payment plan.
+- **Mortgage payment plan** — split a mortgage into parts with different rates, choose what to amortize, and view a 12-month payment plan.
 - **Financing planner** — compare original vs adjusted consumer-financing installments, costs, and an expandable payment schedule.
 - **50 / 30 / 20** — split monthly take-home pay into needs, wants, and savings targets.
 - **Day budget** — divide remaining money by days until payday, minus known expenses.

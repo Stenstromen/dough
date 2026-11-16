@@ -221,12 +221,28 @@ export function MortgagePayment() {
 
   return (
     <WidgetFrame
-      title="Monthly payment"
-      description="Split a mortgage into parts with their own rates, choose what you amortize each month, and see the cost for the next twelve months."
+      title="Mortgage payment plan"
+      description="Split the loan into parts with their own rates, choose what to amortize, and see the next twelve months."
     >
-      <Stack gap="lg">
+      <Stack gap="md" className="mortgage__parts">
+        {parts.length > 1 ? (
+          <Checkbox
+            id={sharedInterestId}
+            tone="muted"
+            className="mortgage__shared-rate"
+            label="Same interest for all parts"
+            checked={sameInterest}
+            onChange={(event) => toggleSameInterest(event.target.checked)}
+          />
+        ) : null}
+
         {parts.map((part, index) => (
-          <Surface as="section" key={part.id} variant="panel">
+          <Surface
+            as="section"
+            key={part.id}
+            variant="panel"
+            className="mortgage__part"
+          >
             <div className="mortgage__part-head">
               <Field
                 grow
@@ -239,13 +255,17 @@ export function MortgagePayment() {
                 }
               />
               {parts.length > 1 ? (
-                <Button variant="danger" onClick={() => removePart(part.id)}>
+                <Button
+                  variant="danger"
+                  className="mortgage__remove"
+                  onClick={() => removePart(part.id)}
+                >
                   Remove
                 </Button>
               ) : null}
             </div>
 
-            <Stack gap="md" columns="part-grid">
+            <div className="mortgage__metrics">
               <Field
                 label="Mortgage size"
                 inputMode="numeric"
@@ -258,36 +278,22 @@ export function MortgagePayment() {
                   })
                 }
               />
+              <Field
+                label="Interest %"
+                inputMode="decimal"
+                autoComplete="off"
+                placeholder="4.5"
+                value={part.rate}
+                onChange={(event) =>
+                  updateRate(part.id, formatInputRate(event.target.value))
+                }
+              />
+            </div>
 
-              <Stack gap="sm">
-                <Field
-                  label="Interest %"
-                  inputMode="decimal"
-                  autoComplete="off"
-                  placeholder="4.5"
-                  value={part.rate}
-                  onChange={(event) =>
-                    updateRate(part.id, formatInputRate(event.target.value))
-                  }
-                />
-                {index === 0 && parts.length > 1 ? (
-                  <Checkbox
-                    id={sharedInterestId}
-                    tone="muted"
-                    label="Same interest for all parts"
-                    checked={sameInterest}
-                    onChange={(event) =>
-                      toggleSameInterest(event.target.checked)
-                    }
-                  />
-                ) : null}
-              </Stack>
-            </Stack>
-
-            <Stack gap="md">
+            <div className="mortgage__options">
               <Checkbox
                 id={`${baseId}-${part.id}-amortize`}
-                label="Amortize this part monthly"
+                label="Amortize monthly"
                 checked={part.amortize}
                 onChange={(event) =>
                   updatePart(part.id, { amortize: event.target.checked })
@@ -307,7 +313,7 @@ export function MortgagePayment() {
                   }
                 />
               ) : null}
-            </Stack>
+            </div>
           </Surface>
         ))}
 
@@ -322,7 +328,7 @@ export function MortgagePayment() {
       >
         {ready && firstMonth ? (
           <>
-            <Stack gap="lg" columns="auto-2">
+            <div className="mortgage__summary">
               <Metric
                 label="Total this month"
                 value={formatAmount(Math.round(firstMonth.totalPayment))}
@@ -339,7 +345,7 @@ export function MortgagePayment() {
                   )}
                 />
               </StatGroup>
-            </Stack>
+            </div>
 
             <div>
               <Text variant="section" className="mortgage__section">

@@ -106,7 +106,8 @@
 
 .ui-shell__stage {
   min-width: 0;
-  padding: 1.25rem 1.15rem calc(var(--dock-height) + 1.25rem);
+  overflow-x: clip;
+  padding: 1.15rem 0.9rem calc(var(--dock-height) + 1.15rem);
 }
 
 @media (min-width: 900px) {
@@ -118,6 +119,7 @@
 .ui-shell__stage-inner {
   width: min(100%, 54rem);
   margin-inline: auto;
+  min-width: 0;
 }
 
 .ui-shell__mobile-brand {
