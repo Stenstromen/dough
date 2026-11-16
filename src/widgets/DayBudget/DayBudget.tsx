@@ -279,7 +279,7 @@ export function DayBudget() {
             instead of leaving them in the daily plan.
           </Text>
         ) : (
-          <Stack gap="md">
+          <Stack gap="sm">
             {expenses.map((expense, index) => {
               const due = isDueOrPast(expense.dueDate, today)
               return (
@@ -296,6 +296,8 @@ export function DayBudget() {
                   <div className="day-budget__expense-row">
                     <Field
                       grow
+                      clearable={false}
+                      className="day-budget__expense-name"
                       label="Name"
                       autoComplete="off"
                       placeholder={`Expense ${index + 1}`}
@@ -305,6 +307,8 @@ export function DayBudget() {
                       }
                     />
                     <Field
+                      clearable={false}
+                      className="day-budget__expense-amount"
                       label="Amount"
                       inputMode="numeric"
                       autoComplete="off"
@@ -319,15 +323,17 @@ export function DayBudget() {
                     <Button
                       variant="danger"
                       className="day-budget__remove"
+                      aria-label={`Remove ${expense.name.trim() || `expense ${index + 1}`}`}
                       onClick={() => removeExpense(expense.id)}
                     >
-                      Remove
+                      ×
                     </Button>
                   </div>
 
                   <DateField
                     clearable
-                    label="Due date (optional)"
+                    className="day-budget__expense-due"
+                    label="Due (optional)"
                     value={expense.dueDate}
                     onChange={(dueDate) =>
                       updateExpense(expense.id, { dueDate })
@@ -336,9 +342,8 @@ export function DayBudget() {
 
                   {due ? (
                     <Text variant="meta" className="day-budget__due-note">
-                      Due today or already past — deduct this from the available
-                      sum, then clear or remove it so it does not skew the daily
-                      budget.
+                      Due or past — deduct from available sum, then clear or
+                      remove.
                     </Text>
                   ) : null}
                 </Surface>
