@@ -91,6 +91,15 @@ function isDueOrPast(dueDateRaw: string, reference: Date): boolean {
   return isOnOrBefore(dueDate, reference)
 }
 
+function compareExpensesByDueDate(a: ExpenseDraft, b: ExpenseDraft): number {
+  const aDue = parseDateInput(a.dueDate)
+  const bDue = parseDateInput(b.dueDate)
+  if (!aDue && !bDue) return 0
+  if (!aDue) return 1
+  if (!bDue) return -1
+  return aDue.getTime() - bDue.getTime()
+}
+
 export function DayBudget() {
   const [state, setState] = usePersistedState(
     'dough:day-budget',
@@ -99,7 +108,9 @@ export function DayBudget() {
   )
 
   const today = startOfDay(new Date())
-  const expenses = state.expenses.map(normalizeExpense)
+  const expenses = state.expenses
+    .map(normalizeExpense)
+    .sort(compareExpensesByDueDate)
 
   const result = useMemo(() => {
     const sum = parseAmount(state.sumRaw)
