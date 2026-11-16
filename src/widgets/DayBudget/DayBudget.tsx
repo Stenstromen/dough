@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import {
   Button,
   DateField,
@@ -12,12 +12,7 @@ import {
   Text,
   WidgetFrame,
 } from '../../components'
-import {
-  defaultPayday,
-  parseDateInput,
-  startOfDay,
-  toDateInputValue,
-} from '../../lib/dates'
+import { defaultPayday, parseDateInput, toDateInputValue } from '../../lib/dates'
 import { formatAmount, formatInputAmount, parseAmount } from '../../lib/format'
 import { usePersistedState } from '../../lib/usePersistedState'
 import { adjustSum, calculateDayBudget } from './calculate'
@@ -31,6 +26,7 @@ interface ExpenseDraft {
 
 interface DayBudgetState {
   sumRaw: string
+  startDate: string
   payday: string
   expenses: ExpenseDraft[]
   nextExpenseNumber: number
@@ -40,6 +36,7 @@ const QUICK_DELTAS = [-1000, -100, -10, 10, 100, 1000] as const
 
 const INITIAL_STATE: DayBudgetState = {
   sumRaw: '',
+  startDate: toDateInputValue(new Date()),
   payday: toDateInputValue(defaultPayday()),
   expenses: [],
   nextExpenseNumber: 1,
@@ -60,6 +57,7 @@ function isDayBudgetState(value: unknown): value is DayBudgetState {
   const record = value as Record<string, unknown>
   return (
     typeof record.sumRaw === 'string' &&
+    typeof record.startDate === 'string' &&
     typeof record.payday === 'string' &&
     Array.isArray(record.expenses) &&
     record.expenses.every(isExpenseDraft) &&
@@ -77,29 +75,10 @@ export function DayBudget() {
     INITIAL_STATE,
     isDayBudgetState,
   )
-  const [startDate, setStartDate] = useState(() =>
-    toDateInputValue(new Date()),
-  )
-
-  useEffect(() => {
-    const today = new Date()
-    setStartDate(toDateInputValue(today))
-
-    setState((current) => {
-      const payday = parseDateInput(current.payday)
-      if (!payday || startOfDay(payday) < startOfDay(today)) {
-        return {
-          ...current,
-          payday: toDateInputValue(defaultPayday(today)),
-        }
-      }
-      return current
-    })
-  }, [setState])
 
   const result = useMemo(() => {
     const sum = parseAmount(state.sumRaw)
-    const start = parseDateInput(startDate)
+    const start = parseDateInput(state.startDate)
     const payday = parseDateInput(state.payday)
     if (sum === null || start === null || payday === null) {
       return null
@@ -121,7 +100,7 @@ export function DayBudget() {
         ]
       }),
     })
-  }, [state, startDate])
+  }, [state])
 
   function setSumFromNumber(next: number) {
     setState((current) => ({
@@ -204,13 +183,23 @@ export function DayBudget() {
           <div className="day-budget__date-field">
             <DateField
               label="From date"
-              value={startDate}
-              onChange={setStartDate}
+              value={state.startDate}
+              onChange={(startDate) =>
+                setState((current) => ({
+                  ...current,
+                  startDate,
+                }))
+              }
             />
             <Button
               className="day-budget__today"
               variant="accent"
-              onClick={() => setStartDate(toDateInputValue(new Date()))}
+              onClick={() =>
+                setState((current) => ({
+                  ...current,
+                  startDate: toDateInputValue(new Date()),
+                }))
+              }
             >
               Today
             </Button>
