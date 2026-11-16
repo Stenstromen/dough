@@ -1,13 +1,25 @@
 .day-budget__deltas {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.day-budget__delta-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.45rem;
 }
 
 .day-budget__delta {
-  min-width: 4.25rem;
-  padding: 0.55rem 0.7rem;
+  min-width: 0;
+  width: 100%;
+  padding: 0.55rem 0.35rem;
   font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 640px) {
+  .day-budget__delta {
+    padding: 0.55rem 0.7rem;
+  }
 }
 
 .day-budget__dates {

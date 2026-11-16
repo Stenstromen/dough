@@ -39,7 +39,8 @@ interface DayBudgetState {
   nextExpenseNumber: number
 }
 
-const QUICK_DELTAS = [-1000, -100, -10, 10, 100, 1000] as const
+const POSITIVE_DELTAS = [1000, 100, 10, 1] as const
+const NEGATIVE_DELTAS = [-1000, -100, -10, -1] as const
 
 const INITIAL_STATE: DayBudgetState = {
   sumRaw: '',
@@ -198,16 +199,30 @@ export function DayBudget() {
         />
 
         <div className="day-budget__deltas" role="group" aria-label="Quick sum update">
-          {QUICK_DELTAS.map((delta) => (
-            <Button
-              key={delta}
-              className="day-budget__delta"
-              variant={delta < 0 ? 'ghost' : 'accent'}
-              onClick={() => applyDelta(delta)}
-            >
-              {formatDelta(delta)}
-            </Button>
-          ))}
+          <div className="day-budget__delta-row" aria-label="Increase sum">
+            {POSITIVE_DELTAS.map((delta) => (
+              <Button
+                key={delta}
+                className="day-budget__delta"
+                variant="accent"
+                onClick={() => applyDelta(delta)}
+              >
+                {formatDelta(delta)}
+              </Button>
+            ))}
+          </div>
+          <div className="day-budget__delta-row" aria-label="Decrease sum">
+            {NEGATIVE_DELTAS.map((delta) => (
+              <Button
+                key={delta}
+                className="day-budget__delta"
+                variant="ghost"
+                onClick={() => applyDelta(delta)}
+              >
+                {formatDelta(delta)}
+              </Button>
+            ))}
+          </div>
         </div>
 
         <Stack gap="md" columns="form-2" className="day-budget__dates">
