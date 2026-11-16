@@ -15,6 +15,7 @@ interface DateFieldProps {
   onChange: (value: string) => void
   id?: string
   className?: string
+  clearable?: boolean
 }
 
 export function DateField({
@@ -23,28 +24,43 @@ export function DateField({
   onChange,
   id,
   className,
+  clearable = false,
 }: DateFieldProps) {
   const generatedId = useId()
   const fieldId = id ?? generatedId
   const pickerId = `${fieldId}-picker`
   const [draft, setDraft] = useState<string | null>(null)
   const display = draft ?? formatDateDisplay(value)
+  const showClear = clearable && Boolean(value || draft?.trim())
 
   function commitDisplay(raw: string) {
-    const iso = parseDateDisplay(raw)
+    const trimmed = raw.trim()
     setDraft(null)
-    if (iso) {
-      onChange(iso)
+    if (!trimmed) {
+      if (clearable) onChange('')
+      return
     }
+    const iso = parseDateDisplay(trimmed)
+    if (iso) onChange(iso)
   }
 
   return (
     <div className={cn('ui-date-field', className)}>
       <Label htmlFor={fieldId}>{label}</Label>
-      <div className="ui-date-field__control">
+      <div
+        className={cn(
+          'ui-date-field__control',
+          showClear && 'ui-date-field__control--clearable',
+        )}
+      >
         <input
           id={fieldId}
-          className="ui-input ui-input--md ui-date-field__text"
+          className={cn(
+            'ui-input',
+            'ui-input--md',
+            'ui-date-field__text',
+            showClear && 'ui-date-field__text--clearable',
+          )}
           inputMode="numeric"
           autoComplete="off"
           spellCheck={false}
@@ -58,6 +74,21 @@ export function DateField({
             }
           }}
         />
+        {showClear ? (
+          <button
+            type="button"
+            className="ui-date-field__clear"
+            aria-label="Clear date"
+            tabIndex={-1}
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={() => {
+              setDraft(null)
+              onChange('')
+            }}
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        ) : null}
         <div className="ui-date-field__calendar">
           <svg
             viewBox="0 0 20 20"
@@ -94,7 +125,6 @@ export function DateField({
             aria-label="Open calendar"
             onChange={(event) => {
               const next = event.target.value
-              if (!next) return
               setDraft(null)
               onChange(next)
             }}

@@ -69,3 +69,7 @@ export function calendarDaysBetween(from: Date, to: Date): number {
   const ms = startOfDay(to).getTime() - startOfDay(from).getTime()
   return Math.round(ms / 86_400_000)
 }
+
+export function isOnOrBefore(date: Date, reference: Date): boolean {
+  return startOfDay(date).getTime() <= startOfDay(reference).getTime()
+}

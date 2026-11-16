@@ -12,7 +12,13 @@ import {
   Text,
   WidgetFrame,
 } from '../../components'
-import { defaultPayday, parseDateInput, toDateInputValue } from '../../lib/dates'
+import {
+  defaultPayday,
+  isOnOrBefore,
+  parseDateInput,
+  startOfDay,
+  toDateInputValue,
+} from '../../lib/dates'
 import { formatAmount, formatInputAmount, parseAmount } from '../../lib/format'
 import { usePersistedState } from '../../lib/usePersistedState'
 import { adjustSum, calculateDayBudget } from './calculate'
@@ -22,6 +28,7 @@ interface ExpenseDraft {
   id: string
   name: string
   amount: string
+  dueDate: string
 }
 
 interface DayBudgetState {
@@ -48,8 +55,16 @@ function isExpenseDraft(value: unknown): value is ExpenseDraft {
   return (
     typeof record.id === 'string' &&
     typeof record.name === 'string' &&
-    typeof record.amount === 'string'
+    typeof record.amount === 'string' &&
+    (typeof record.dueDate === 'string' || record.dueDate === undefined)
   )
+}
+
+function normalizeExpense(value: ExpenseDraft): ExpenseDraft {
+  return {
+    ...value,
+    dueDate: value.dueDate ?? '',
+  }
 }
 
 function isDayBudgetState(value: unknown): value is DayBudgetState {
@@ -69,12 +84,21 @@ function formatDelta(delta: number): string {
   return delta > 0 ? `+${delta}` : String(delta)
 }
 
+function isDueOrPast(dueDateRaw: string, reference: Date): boolean {
+  const dueDate = parseDateInput(dueDateRaw)
+  if (!dueDate) return false
+  return isOnOrBefore(dueDate, reference)
+}
+
 export function DayBudget() {
   const [state, setState] = usePersistedState(
     'dough:day-budget',
     INITIAL_STATE,
     isDayBudgetState,
   )
+
+  const today = startOfDay(new Date())
+  const expenses = state.expenses.map(normalizeExpense)
 
   const result = useMemo(() => {
     const sum = parseAmount(state.sumRaw)
@@ -88,7 +112,8 @@ export function DayBudget() {
       sum,
       startDate: start,
       payday,
-      expenses: state.expenses.flatMap((expense) => {
+      referenceDate: today,
+      expenses: state.expenses.map(normalizeExpense).flatMap((expense) => {
         const amount = parseAmount(expense.amount)
         if (amount === null || amount <= 0) return []
         return [
@@ -96,11 +121,12 @@ export function DayBudget() {
             id: expense.id,
             name: expense.name.trim() || 'Expense',
             amount,
+            dueDate: parseDateInput(expense.dueDate),
           },
         ]
       }),
     })
-  }, [state])
+  }, [state, today])
 
   function setSumFromNumber(next: number) {
     setState((current) => ({
@@ -119,11 +145,12 @@ export function DayBudget() {
       ...current,
       nextExpenseNumber: current.nextExpenseNumber + 1,
       expenses: [
-        ...current.expenses,
+        ...current.expenses.map(normalizeExpense),
         {
           id: `expense-${current.nextExpenseNumber}`,
           name: '',
           amount: '',
+          dueDate: '',
         },
       ],
     }))
@@ -133,7 +160,9 @@ export function DayBudget() {
     setState((current) => ({
       ...current,
       expenses: current.expenses.map((expense) =>
-        expense.id === id ? { ...expense, ...patch } : expense,
+        expense.id === id
+          ? normalizeExpense({ ...normalizeExpense(expense), ...patch })
+          : normalizeExpense(expense),
       ),
     }))
   }
@@ -141,14 +170,16 @@ export function DayBudget() {
   function removeExpense(id: string) {
     setState((current) => ({
       ...current,
-      expenses: current.expenses.filter((expense) => expense.id !== id),
+      expenses: current.expenses
+        .filter((expense) => expense.id !== id)
+        .map(normalizeExpense),
     }))
   }
 
   return (
     <WidgetFrame
       title="Day budget"
-      description="Divide what's left until payday by the remaining days. Subtract known expenses first, then spend the daily amount."
+      description="Divide what's left until payday by the remaining days. Subtract upcoming known expenses first, then spend the daily amount."
     >
       <Stack gap="lg">
         <Field
@@ -226,53 +257,78 @@ export function DayBudget() {
           </Button>
         </div>
 
-        {state.expenses.length === 0 ? (
+        {expenses.length === 0 ? (
           <Text variant="meta">
-            Add bills or set-asides to subtract before calculating the daily
-            budget.
+            Add bills or set-asides with an optional due date. Due or past
+            expenses light up so you can deduct them from the available sum
+            instead of leaving them in the daily plan.
           </Text>
         ) : (
           <Stack gap="md">
-            {state.expenses.map((expense, index) => (
-              <Surface
-                as="section"
-                key={expense.id}
-                variant="panel"
-                className="day-budget__expense"
-              >
-                <div className="day-budget__expense-row">
-                  <Field
-                    grow
-                    label="Name"
-                    autoComplete="off"
-                    placeholder={`Expense ${index + 1}`}
-                    value={expense.name}
-                    onChange={(event) =>
-                      updateExpense(expense.id, { name: event.target.value })
+            {expenses.map((expense, index) => {
+              const due = isDueOrPast(expense.dueDate, today)
+              return (
+                <Surface
+                  as="section"
+                  key={expense.id}
+                  variant="panel"
+                  className={
+                    due
+                      ? 'day-budget__expense day-budget__expense--due'
+                      : 'day-budget__expense'
+                  }
+                >
+                  <div className="day-budget__expense-row">
+                    <Field
+                      grow
+                      label="Name"
+                      autoComplete="off"
+                      placeholder={`Expense ${index + 1}`}
+                      value={expense.name}
+                      onChange={(event) =>
+                        updateExpense(expense.id, { name: event.target.value })
+                      }
+                    />
+                    <Field
+                      label="Amount"
+                      inputMode="numeric"
+                      autoComplete="off"
+                      placeholder="500"
+                      value={expense.amount}
+                      onChange={(event) =>
+                        updateExpense(expense.id, {
+                          amount: formatInputAmount(event.target.value),
+                        })
+                      }
+                    />
+                    <Button
+                      variant="danger"
+                      className="day-budget__remove"
+                      onClick={() => removeExpense(expense.id)}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+
+                  <DateField
+                    clearable
+                    label="Due date (optional)"
+                    value={expense.dueDate}
+                    onChange={(dueDate) =>
+                      updateExpense(expense.id, { dueDate })
                     }
                   />
-                  <Field
-                    label="Amount"
-                    inputMode="numeric"
-                    autoComplete="off"
-                    placeholder="500"
-                    value={expense.amount}
-                    onChange={(event) =>
-                      updateExpense(expense.id, {
-                        amount: formatInputAmount(event.target.value),
-                      })
-                    }
-                  />
-                  <Button
-                    variant="danger"
-                    className="day-budget__remove"
-                    onClick={() => removeExpense(expense.id)}
-                  >
-                    Remove
-                  </Button>
-                </div>
-              </Surface>
-            ))}
+
+                  {due ? (
+                    <Text variant="meta" className="day-budget__due-note">
+                      Due today or already past — deduct this from the available
+                      sum, then clear or remove it so it does not skew the daily
+                      budget.
+                    </Text>
+                  ) : null}
+                </Surface>
+              )
+            })}
           </Stack>
         )}
       </Stack>
@@ -298,10 +354,21 @@ export function DayBudget() {
                 value={formatAmount(Math.round(result.available))}
               />
               <Stat
-                label="Known expenses"
-                value={formatAmount(Math.round(result.expenseTotal))}
+                label="Upcoming expenses"
+                value={formatAmount(Math.round(result.upcomingExpenseTotal))}
               />
             </StatGroup>
+
+            {result.dueExpenseCount > 0 ? (
+              <Text variant="meta" className="day-budget__due-summary">
+                {result.dueExpenseCount} due expense
+                {result.dueExpenseCount === 1 ? '' : 's'} totaling{' '}
+                {formatAmount(Math.round(result.dueExpenseTotal))}{' '}
+                {result.dueExpenseCount === 1 ? 'is' : 'are'} highlighted and
+                left out of the daily calculation — adjust the available sum
+                first.
+              </Text>
+            ) : null}
 
             {result.paydayIsPast ? (
               <Text variant="meta">
@@ -313,8 +380,8 @@ export function DayBudget() {
                 {formatAmount(Math.round(result.available))} left over{' '}
                 {result.daysRemaining} day
                 {result.daysRemaining === 1 ? '' : 's'} until payday
-                {result.expenseTotal > 0
-                  ? `, after ${formatAmount(Math.round(result.expenseTotal))} in known expenses`
+                {result.upcomingExpenseTotal > 0
+                  ? `, after ${formatAmount(Math.round(result.upcomingExpenseTotal))} in upcoming expenses`
                   : ''}
                 .
               </Text>

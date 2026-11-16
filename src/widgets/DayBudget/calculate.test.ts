@@ -1,5 +1,39 @@
 import { describe, expect, it } from 'vitest'
-import { adjustSum, calculateDayBudget } from './calculate'
+import { adjustSum, calculateDayBudget, isExpenseDue } from './calculate'
+
+describe('isExpenseDue', () => {
+  const today = new Date(2026, 10, 16)
+
+  it('is false when no due date is set', () => {
+    expect(
+      isExpenseDue({ id: '1', name: 'Bill', amount: 100 }, today),
+    ).toBe(false)
+  })
+
+  it('is true when due today or earlier', () => {
+    expect(
+      isExpenseDue(
+        { id: '1', name: 'Bill', amount: 100, dueDate: new Date(2026, 10, 16) },
+        today,
+      ),
+    ).toBe(true)
+    expect(
+      isExpenseDue(
+        { id: '1', name: 'Bill', amount: 100, dueDate: new Date(2026, 10, 10) },
+        today,
+      ),
+    ).toBe(true)
+  })
+
+  it('is false when due in the future', () => {
+    expect(
+      isExpenseDue(
+        { id: '1', name: 'Bill', amount: 100, dueDate: new Date(2026, 10, 20) },
+        today,
+      ),
+    ).toBe(false)
+  })
+})
 
 describe('calculateDayBudget', () => {
   it('returns null for invalid sums', () => {
@@ -13,22 +47,36 @@ describe('calculateDayBudget', () => {
     ).toBeNull()
   })
 
-  it('subtracts known expenses and divides by days until payday', () => {
+  it('subtracts only upcoming expenses from the daily plan', () => {
     const result = calculateDayBudget({
       sum: 10_000,
-      startDate: new Date(2026, 10, 20),
+      startDate: new Date(2026, 10, 16),
       payday: new Date(2026, 10, 25),
+      referenceDate: new Date(2026, 10, 16),
       expenses: [
-        { id: '1', name: 'Rent share', amount: 2_000 },
-        { id: '2', name: 'Transit', amount: 500 },
+        {
+          id: '1',
+          name: 'Already due',
+          amount: 2_000,
+          dueDate: new Date(2026, 10, 15),
+        },
+        {
+          id: '2',
+          name: 'Upcoming',
+          amount: 500,
+          dueDate: new Date(2026, 10, 20),
+        },
+        { id: '3', name: 'No date', amount: 1_000 },
       ],
     })
 
-    expect(result).toEqual({
-      expenseTotal: 2_500,
-      available: 7_500,
-      daysRemaining: 5,
-      dailyBudget: 1_500,
+    expect(result).toMatchObject({
+      dueExpenseTotal: 2_000,
+      dueExpenseCount: 1,
+      upcomingExpenseTotal: 1_500,
+      available: 8_500,
+      daysRemaining: 9,
+      dailyBudget: 8_500 / 9,
       paydayIsPast: false,
     })
   })

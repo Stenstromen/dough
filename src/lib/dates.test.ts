@@ -3,6 +3,7 @@ import {
   calendarDaysBetween,
   defaultPayday,
   formatDateDisplay,
+  isOnOrBefore,
   parseDateDisplay,
   parseDateInput,
   toDateInputValue,
@@ -36,5 +37,12 @@ describe('dates', () => {
     expect(
       calendarDaysBetween(new Date(2026, 10, 20), new Date(2026, 10, 25)),
     ).toBe(5)
+  })
+
+  it('checks whether a date is on or before a reference day', () => {
+    const today = new Date(2026, 10, 16)
+    expect(isOnOrBefore(new Date(2026, 10, 15), today)).toBe(true)
+    expect(isOnOrBefore(new Date(2026, 10, 16), today)).toBe(true)
+    expect(isOnOrBefore(new Date(2026, 10, 17), today)).toBe(false)
   })
 })
