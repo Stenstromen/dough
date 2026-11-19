@@ -1,6 +1,12 @@
 import type { ComponentType } from 'react'
 
-export type WidgetId = 'ltv' | 'mortgage' | 'financing' | 'budget' | 'day-budget'
+export type WidgetId =
+  | 'ltv'
+  | 'mortgage'
+  | 'financing'
+  | 'budget'
+  | 'day-budget'
+  | 'week-budget'
 
 export interface WidgetDefinition {
   id: WidgetId

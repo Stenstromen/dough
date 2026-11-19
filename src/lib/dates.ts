@@ -70,6 +70,12 @@ export function calendarDaysBetween(from: Date, to: Date): number {
   return Math.round(ms / 86_400_000)
 }
 
+export function addCalendarDays(date: Date, days: number): Date {
+  const next = startOfDay(date)
+  next.setDate(next.getDate() + days)
+  return next
+}
+
 export function isOnOrBefore(date: Date, reference: Date): boolean {
   return startOfDay(date).getTime() <= startOfDay(reference).getTime()
 }

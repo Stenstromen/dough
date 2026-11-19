@@ -3,6 +3,7 @@ import { DayBudget } from './DayBudget/DayBudget'
 import { FinancingPlanner } from './FinancingPlanner/FinancingPlanner'
 import { LtvCalculator } from './LtvCalculator/LtvCalculator'
 import { MortgagePayment } from './MortgagePayment/MortgagePayment'
+import { WeekBudget } from './WeekBudget/WeekBudget'
 import type { WidgetDefinition, WidgetId } from './types'
 
 export const widgets: WidgetDefinition[] = [
@@ -40,6 +41,13 @@ export const widgets: WidgetDefinition[] = [
     shortName: 'Day',
     description: 'Spendable per day to payday',
     Component: DayBudget,
+  },
+  {
+    id: 'week-budget',
+    name: 'Week budget',
+    shortName: 'Week',
+    description: 'Weekly slice until payday',
+    Component: WeekBudget,
   },
 ]
 
