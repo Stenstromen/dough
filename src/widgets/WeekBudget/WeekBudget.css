@@ -1,0 +1,97 @@
+.week-budget__dates {
+  align-items: start;
+}
+
+.week-budget__date-field {
+  display: grid;
+  gap: 0.55rem;
+  align-content: start;
+}
+
+.week-budget__today {
+  justify-self: start;
+  padding: 0.55rem 0.9rem;
+}
+
+.week-budget__period {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.week-budget__period-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.week-budget__period-value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.week-budget__slider {
+  width: 100%;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* Scale marks follow the same thumb travel as the range input:
+   value 7 sits at (7-1)/(14-1) ≈ 46.15%, not visual center. */
+.week-budget__period-scale {
+  position: relative;
+  height: 1.05rem;
+  margin-inline: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.week-budget__period-scale span {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.week-budget__due-summary {
+  color: color-mix(in srgb, var(--bad) 55%, var(--ink));
+}
+
+.week-budget__rule-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.week-budget__savings {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.week-budget__split {
+  display: grid;
+  grid-template-columns: 25% 75%;
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+.week-budget__split-savings {
+  background: var(--good);
+}
+
+.week-budget__split-retain {
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+}
+
+.week-budget__split-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}

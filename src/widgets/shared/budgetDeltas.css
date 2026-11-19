@@ -1,0 +1,23 @@
+.budget-deltas {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.budget-deltas__row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.budget-deltas__button {
+  min-width: 0;
+  width: 100%;
+  padding: 0.55rem 0.35rem;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 640px) {
+  .budget-deltas__button {
+    padding: 0.55rem 0.7rem;
+  }
+}
