@@ -95,8 +95,8 @@ function compareExpensesByDueDate(a: ExpenseDraft, b: ExpenseDraft): number {
   const aDue = parseDateInput(a.dueDate);
   const bDue = parseDateInput(b.dueDate);
   if (!aDue && !bDue) return 0;
-  if (!aDue) return 1;
-  if (!bDue) return -1;
+  if (!aDue) return -1;
+  if (!bDue) return 1;
   return aDue.getTime() - bDue.getTime();
 }
 
@@ -157,13 +157,13 @@ export function DayBudget() {
       ...current,
       nextExpenseNumber: current.nextExpenseNumber + 1,
       expenses: [
-        ...current.expenses.map(normalizeExpense),
         {
           id: `expense-${current.nextExpenseNumber}`,
           name: "",
           amount: "",
           dueDate: "",
         },
+        ...current.expenses.map(normalizeExpense),
       ],
     }));
   }
