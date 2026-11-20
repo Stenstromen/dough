@@ -1,0 +1,2 @@
+# Server-only pepper used when hashing client secrets. Never expose to the browser.
+WORKER_SECRET=replace-with-a-long-random-string

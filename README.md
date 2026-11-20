@@ -30,6 +30,34 @@ npm run dev
 npm test
 ```
 
+### Budget sync (Pages Function + KV)
+
+Day/week budget pages can sync via `/api/sync/:id`.
+
+1. Create KV namespaces and put the ids in `wrangler.toml`:
+
+```bash
+npx wrangler kv namespace create SYNC
+npx wrangler kv namespace create SYNC --preview
+```
+
+2. Set the server-only pepper (never expose this to the client):
+
+```bash
+cp .dev.vars.example .dev.vars
+# edit WORKER_SECRET in .dev.vars
+
+npx wrangler pages secret put WORKER_SECRET
+```
+
+3. Run with Functions locally:
+
+```bash
+npm run pages:dev
+```
+
+Plain `npm run dev` serves the Vite app only — sync API calls need `pages:dev` or a deployed Pages project.
+
 ## Deploy to Cloudflare Pages
 
 ```bash
@@ -41,3 +69,4 @@ Or connect the repo in the Cloudflare dashboard:
 - **Build command:** `npm run build`
 - **Build output directory:** `dist`
 - **Framework preset:** Vite
+- Bind the `SYNC` KV namespace and set the `WORKER_SECRET` pages secret

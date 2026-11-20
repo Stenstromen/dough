@@ -1,3 +1,15 @@
 name = "dough"
 compatibility_date = "2025-11-01"
 pages_build_output_dir = "dist"
+
+# Create namespaces, then replace the placeholder ids:
+#   npx wrangler kv namespace create SYNC
+#   npx wrangler kv namespace create SYNC --preview
+[[kv_namespaces]]
+binding = "SYNC"
+id = "9b531cc9c26c4c92bc6f3b5f43864b57"
+preview_id = "5cf6a5b3ca39457ca470e2e9648222fe"
+
+# Set the server-only pepper (never ship to the client):
+#   npx wrangler pages secret put WORKER_SECRET
+# Local: copy .dev.vars.example → .dev.vars

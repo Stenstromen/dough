@@ -20,6 +20,7 @@ import {
 import { formatAmount, formatInputAmount, parseAmount } from '../../lib/format'
 import { usePersistedState } from '../../lib/usePersistedState'
 import { BudgetDeltas } from '../shared/BudgetDeltas'
+import { BudgetSyncPanel } from '../shared/BudgetSyncPanel'
 import { KnownExpensesEditor } from '../shared/KnownExpensesEditor'
 import { useKnownExpenses } from '../shared/knownExpenses'
 import { toKnownExpenses } from '../shared/toKnownExpenses'
@@ -92,6 +93,8 @@ export function DayBudget() {
       title="Day budget"
       description="Divide what's left until payday by the remaining days. Subtract upcoming known expenses first, then spend the daily amount."
     >
+      <BudgetSyncPanel />
+
       <Stack gap="lg">
         <Field
           label="Available sum"

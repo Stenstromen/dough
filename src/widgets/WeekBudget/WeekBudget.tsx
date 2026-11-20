@@ -27,6 +27,7 @@ import {
 import { usePersistedState } from '../../lib/usePersistedState'
 import { adjustSum } from '../DayBudget/calculate'
 import { BudgetDeltas } from '../shared/BudgetDeltas'
+import { BudgetSyncPanel } from '../shared/BudgetSyncPanel'
 import { KnownExpensesEditor } from '../shared/KnownExpensesEditor'
 import { useKnownExpenses } from '../shared/knownExpenses'
 import { toKnownExpenses } from '../shared/toKnownExpenses'
@@ -168,6 +169,8 @@ export function WeekBudget() {
       title="Week budget"
       description="Plan a week-sized slice of what's left until payday. Upcoming known expenses stay reserved, then spend the weekly amount — and at the end, move 25% of anything unspent to savings."
     >
+      <BudgetSyncPanel />
+
       <Stack gap="lg">
         <Field
           label="Available sum"
