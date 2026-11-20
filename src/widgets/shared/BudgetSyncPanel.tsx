@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Button, Field, Stack, Text } from '../../components'
 import { useBudgetSync } from '../../lib/sync/useBudgetSync'
+import { usePersistedState } from '../../lib/usePersistedState'
 import './BudgetSyncPanel.css'
 
 function formatSyncTime(value: number | null): string {
@@ -15,8 +16,17 @@ function formatSyncTime(value: number | null): string {
   }
 }
 
+function isBoolean(value: unknown): value is boolean {
+  return typeof value === 'boolean'
+}
+
 export function BudgetSyncPanel() {
   const sync = useBudgetSync()
+  const [hidden, setHidden] = usePersistedState(
+    'dough:sync-panel-hidden',
+    false,
+    isBoolean,
+  )
   const [joinCode, setJoinCode] = useState('')
   const [showJoin, setShowJoin] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -36,6 +46,46 @@ export function BudgetSyncPanel() {
     }
   }
 
+  if (sync.active && hidden) {
+    return (
+      <section
+        className="budget-sync budget-sync--collapsed"
+        aria-label="Budget sync"
+      >
+        <div className="budget-sync__collapsed">
+          <div className="budget-sync__collapsed-status">
+            <span className="budget-sync__dot" aria-hidden="true" />
+            <Text variant="meta" className="budget-sync__collapsed-label">
+              Sync active
+              {sync.status === 'syncing'
+                ? ' · Syncing…'
+                : sync.error
+                  ? ' · Error'
+                  : ''}
+            </Text>
+          </div>
+          <div className="budget-sync__actions">
+            <Button variant="ghost" onClick={() => setHidden(false)}>
+              Show
+            </Button>
+            <Button
+              variant="accent"
+              disabled={sync.status === 'syncing'}
+              onClick={() => void sync.refresh()}
+            >
+              {sync.status === 'syncing' ? 'Syncing…' : 'Refresh'}
+            </Button>
+          </div>
+        </div>
+        {sync.error ? (
+          <Text variant="meta" className="budget-sync__error">
+            {sync.error}
+          </Text>
+        ) : null}
+      </section>
+    )
+  }
+
   return (
     <section className="budget-sync" aria-label="Budget sync">
       <div className="budget-sync__head">
@@ -47,9 +97,14 @@ export function BudgetSyncPanel() {
           </Text>
         </div>
         {sync.active ? (
-          <Text variant="meta" className="budget-sync__id">
-            {sync.truncatedId}
-          </Text>
+          <div className="budget-sync__head-actions">
+            <Text variant="meta" className="budget-sync__id">
+              {sync.truncatedId}
+            </Text>
+            <Button variant="ghost" onClick={() => setHidden(true)}>
+              Hide
+            </Button>
+          </div>
         ) : null}
       </div>
 

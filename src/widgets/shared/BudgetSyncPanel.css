@@ -27,10 +27,50 @@
   color: var(--ink-soft);
 }
 
+.budget-sync__head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
 .budget-sync__actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
+}
+
+.budget-sync--collapsed {
+  gap: var(--space-2);
+  padding-block: var(--space-2);
+}
+
+.budget-sync__collapsed {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.budget-sync__collapsed-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.budget-sync__collapsed-label {
+  margin: 0;
+}
+
+.budget-sync__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--good);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--good) 22%, transparent);
+  flex-shrink: 0;
 }
 
 .budget-sync__error {
